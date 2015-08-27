@@ -1,8 +1,10 @@
-
+/*
 #include "user_button.h"
+//#include "espressif/esp8266/gpio_register.h"
+//#include "espressif/esp8266/pin_mux_register.h"
+#include "../driver_lib/include/gpio.h"
 
-void ICACHE_FLASH_ATTR
-init_button()
+void init_button()
 {
 	//select gpio function
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO4_U,FUNC_GPIO4);
@@ -28,8 +30,7 @@ init_button()
 }
 
 
-void ICACHE_FLASH_ATTR
-press_button(type_button)
+void press_button(type_button)
 {
 	GPIO_OUTPUT_SET(4,1);
 	delay(500);
@@ -37,3 +38,4 @@ press_button(type_button)
 	delay(500);
 }
 
+*/
