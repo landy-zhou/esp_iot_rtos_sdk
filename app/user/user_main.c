@@ -173,8 +173,8 @@ void user_init(void)
 
     {
         struct station_config *config = (struct station_config *)zalloc(sizeof(struct station_config));
-        sprintf(config->ssid, "ZTE_5560");
-        sprintf(config->password, "espressif");
+        sprintf(config->ssid, "NETGEAR46");
+        sprintf(config->password, "12345678");
 
         /* need to sure that you are in station mode first,
          * otherwise it will be failed. */
@@ -182,8 +182,8 @@ void user_init(void)
         free(config);
     }
 
-    xTaskCreate(task2, "tsk2", 256, NULL, 2, NULL);
-    xTaskCreate(task3, "tsk3", 256, NULL, 2, NULL);
+    //xTaskCreate(task2, "tsk2", 256, NULL, 2, NULL);
+    //xTaskCreate(task3, "tsk3", 256, NULL, 2, NULL);
     xTaskCreate(task4_lan_func, "tsk4", 256, NULL, 2, NULL);
 }
 

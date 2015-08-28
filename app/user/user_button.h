@@ -9,6 +9,7 @@ typedef enum{
 	BUTTON_HEAT_TUNE = 4
 }type_button;
 
-//void press_button(type_button);
+void init_button(void);
+void press_button(type_button button);
 
 #endif //__USER_BUTTON_H__

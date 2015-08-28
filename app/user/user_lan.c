@@ -16,7 +16,7 @@ void task4_lan_func(void *pvParameters)
 {
 	printf("Hello, start task_find_device!\r\n");
 	cJSON *json;
-
+	init_button();
 	while (1) {
 		struct sockaddr_in server_addr,from_addr;
 		int server_sock;
@@ -73,7 +73,8 @@ void task4_lan_func(void *pvParameters)
 						else if(!strncmp(key_button->valuestring,"heat_tune",strlen("heat_tune")))
 							button = BUTTON_HEAT_TUNE;
 						
-						//press_button(button);
+						printf("button %d pressed\n\r",button);
+						press_button(button);
 					}
 
 
