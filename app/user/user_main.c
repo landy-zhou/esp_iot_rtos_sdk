@@ -23,8 +23,51 @@
 #define server_ip "192.168.101.142"
 #define server_port 9669
 
+extern void task3_device_find_func(void *pvParameters);
 extern void task4_lan_func(void *pvParameters);
 
+/******************************************************************************
+ * FunctionName : user_init
+ * Description  : entry of user application, init user function here
+ * Parameters   : none
+ * Returns      : none
+*******************************************************************************/
+void user_init(void)
+{
+    
+    UART_ConfigTypeDef uart_config;
+    uart_config.baud_rate = BIT_RATE_115200;
+    uart_config.data_bits = UART_WordLength_8b;
+    uart_config.parity = USART_Parity_None;
+    uart_config.stop_bits = USART_StopBits_1;
+    uart_config.flow_ctrl = USART_HardwareFlowControl_None;
+    uart_config.UART_RxFlowThresh = 120;
+    uart_config.UART_InverseMask = UART_None_Inverse;
+    UART_ParamConfig(UART0, &uart_config);
+    
+    printf("SDK version:%s\n", system_get_sdk_version());
+
+    /* need to set opmode before you set config */
+    wifi_set_opmode(STATIONAP_MODE);
+
+    {
+        struct station_config *config = (struct station_config *)zalloc(sizeof(struct station_config));
+        sprintf(config->ssid, "NETGEAR46");
+        sprintf(config->password, "12345678");
+
+        /* need to sure that you are in station mode first,
+         * otherwise it will be failed. */
+        wifi_station_set_config(config);
+        free(config);
+    }
+
+    //xTaskCreate(task2, "tsk2", 256, NULL, 2, NULL);
+    //xTaskCreate(task3, "tsk3", 256, NULL, 2, NULL);
+    xTaskCreate(task3_device_find_func, "tsk3", 256, NULL, 2, NULL);
+    xTaskCreate(task4_lan_func, "tsk4", 256, NULL, 2, NULL);
+}
+
+/*
 void task2(void *pvParameters)
 {
     printf("Hello, welcome to client!\r\n");
@@ -146,44 +189,6 @@ void task3(void *pvParameters)
         } while (0);
     }
 }
+*/
 
-/******************************************************************************
- * FunctionName : user_init
- * Description  : entry of user application, init user function here
- * Parameters   : none
- * Returns      : none
-*******************************************************************************/
-void user_init(void)
-{
-    
-    UART_ConfigTypeDef uart_config;
-    uart_config.baud_rate = BIT_RATE_115200;
-    uart_config.data_bits = UART_WordLength_8b;
-    uart_config.parity = USART_Parity_None;
-    uart_config.stop_bits = USART_StopBits_1;
-    uart_config.flow_ctrl = USART_HardwareFlowControl_None;
-    uart_config.UART_RxFlowThresh = 120;
-    uart_config.UART_InverseMask = UART_None_Inverse;
-    UART_ParamConfig(UART0, &uart_config);
-    
-    printf("SDK version:%s\n", system_get_sdk_version());
-
-    /* need to set opmode before you set config */
-    wifi_set_opmode(STATIONAP_MODE);
-
-    {
-        struct station_config *config = (struct station_config *)zalloc(sizeof(struct station_config));
-        sprintf(config->ssid, "NETGEAR46");
-        sprintf(config->password, "12345678");
-
-        /* need to sure that you are in station mode first,
-         * otherwise it will be failed. */
-        wifi_station_set_config(config);
-        free(config);
-    }
-
-    //xTaskCreate(task2, "tsk2", 256, NULL, 2, NULL);
-    //xTaskCreate(task3, "tsk3", 256, NULL, 2, NULL);
-    xTaskCreate(task4_lan_func, "tsk4", 256, NULL, 2, NULL);
-}
 
